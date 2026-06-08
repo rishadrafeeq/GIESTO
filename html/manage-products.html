@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIESTO | Update Products (Client Guide)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="manage-page">
+
+    <div class="manage-wrap container">
+        <a href="collection.html" class="manage-back">← Back to shop</a>
+
+        <header class="manage-header text-center">
+            <span class="section-tag">FOR GIESTO TEAM</span>
+            <h1 class="section-title">Update Products <span class="serif text-italic text-accent">Without Coding</span></h1>
+            <p class="section-desc max-width-600">Use Google Sheets like Excel. Changes appear on the website after you save the sheet.</p>
+        </header>
+
+        <section class="manage-card glass-panel">
+            <h2>Step 1 — Open your product sheet</h2>
+            <p>Ask your developer for the <strong>GIESTO Products</strong> Google Sheet link. Bookmark it — this is where you add and edit products.</p>
+            <p class="manage-tip">No Google Sheet yet? Download the template, upload it to Google Drive, and open with Google Sheets:</p>
+            <a class="btn btn-secondary" href="../data/products-template.csv" download>Download CSV template</a>
+        </section>
+
+        <section class="manage-card glass-panel">
+            <h2>Step 2 — Edit products in the sheet</h2>
+            <p>Each row is one product. Important columns:</p>
+            <div class="manage-table-wrap">
+                <table class="manage-table">
+                    <thead>
+                        <tr>
+                            <th>Column</th>
+                            <th>What to enter</th>
+                            <th>Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>id</code></td><td>Unique code (no spaces)</td><td>emerald-suit</td></tr>
+                        <tr><td><code>name</code></td><td>Product title</td><td>The Giesto Emerald Suit</td></tr>
+                        <tr><td><code>category</code></td><td><strong>formal</strong>, <strong>casual</strong>, or <strong>sports</strong></td><td>formal</td></tr>
+                        <tr><td><code>category_label</code></td><td>Label on card</td><td>Formal Wear</td></tr>
+                        <tr><td><code>price</code></td><td>Price text</td><td>$1,450 / Tailored</td></tr>
+                        <tr><td><code>image</code></td><td>Image path (ask developer for uploads)</td><td>../assets/hero_suit.png</td></tr>
+                        <tr><td><code>description</code></td><td>Short description</td><td>Double-breasted emerald suit…</td></tr>
+                        <tr><td><code>spec_fabric</code> … <code>spec_extra</code></td><td>Detail lines in popup</td><td>Merino wool blend</td></tr>
+                        <tr><td><code>active</code></td><td><strong>yes</strong> to show, <strong>no</strong> to hide</td><td>yes</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="manage-card glass-panel">
+            <h2>Step 3 — Publish the sheet (one-time setup)</h2>
+            <ol class="manage-steps">
+                <li>In Google Sheets: <strong>File → Share → Publish to web</strong></li>
+                <li>Choose <strong>Comma-separated values (.csv)</strong></li>
+                <li>Click <strong>Publish</strong> and copy the link</li>
+                <li>Send the link to your developer — they connect it once</li>
+            </ol>
+            <p class="manage-tip">After setup, you only edit the sheet. No code, no uploads to the website.</p>
+        </section>
+
+        <section class="manage-card glass-panel">
+            <h2>Add a new product</h2>
+            <ol class="manage-steps">
+                <li>Add a new row at the bottom of the sheet</li>
+                <li>Fill every column (use a similar product as a guide)</li>
+                <li>Set <code>category</code> to formal, casual, or sports</li>
+                <li>Set <code>active</code> to <strong>yes</strong></li>
+                <li>Save — refresh the collection page on the website</li>
+            </ol>
+        </section>
+
+        <section class="manage-card glass-panel">
+            <h2>Hide or remove a product</h2>
+            <p>Set <code>active</code> to <strong>no</strong> — it disappears from the shop but stays in the sheet for later.</p>
+        </section>
+
+        <section class="manage-card glass-panel manage-preview">
+            <h2>Preview the shop</h2>
+            <p>After saving the sheet, open the collection page to check your changes:</p>
+            <a class="btn btn-primary" href="collection.html">View collection page</a>
+        </section>
+
+        <footer class="manage-footer text-center">
+            <p>Need help? Contact your website developer. Technical file: <code>data/site-config.js</code></p>
+        </footer>
+    </div>
+
+</body>
+</html>

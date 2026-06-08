@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Browse GIESTO — formal wear, casual wear, and sports wear collections.">
+    <title>GIESTO | Curated Collections</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body data-page="collection">
+
+    <div data-include="partials/header.html"></div>
+
+    <main>
+        <section class="collection-section" id="collection">
+            <div class="container text-center">
+                <span class="section-tag">THE SUITE</span>
+                <h2 class="section-title">Shop by <span class="serif text-italic text-accent">Category</span></h2>
+                <p class="section-desc max-width-600">Formal, casual, and sports wear — tap a category to see pieces in that line.</p>
+
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="all" type="button">All</button>
+                    <button class="filter-btn" data-filter="formal" type="button">Formal Wear</button>
+                    <button class="filter-btn" data-filter="casual" type="button">Casual Wear</button>
+                    <button class="filter-btn" data-filter="sports" type="button">Sports Wear</button>
+                </div>
+            </div>
+
+            <p class="collection-loading text-center" id="collection-loading">Loading collection…</p>
+
+            <!-- Products are loaded automatically from data/products.json or Google Sheets -->
+            <div class="container collection-grid" id="collection-grid"></div>
+
+            <p class="collection-empty text-center" id="collection-empty" hidden>No products in this category yet.</p>
+        </section>
+    </main>
+
+    <div data-include="partials/modal.html"></div>
+    <div data-include="partials/footer.html"></div>
+    <div data-include="partials/toast.html"></div>
+    <script src="../data/site-config.js"></script>
+    <script src="../js/products-catalog.js"></script>
+    <script src="includes.js"></script>
+</body>
+</html>

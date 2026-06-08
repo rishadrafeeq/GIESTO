@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Follow @geistooffical on Instagram — GIESTO atelier lookbook and style updates.">
+    <title>GIESTO | Lookbook Feed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body data-page="instagram">
+
+    <div data-include="partials/header.html"></div>
+
+    <main>
+        <!-- EDIT: Instagram section — profile + live feed from @geistooffical -->
+        <section class="instagram-section" id="instagram">
+            <div class="container text-center">
+                <span class="section-tag">LOOKBOOK INSPIRATION</span>
+                <h2 class="section-title">@geistooffical</h2>
+                <p class="section-desc max-width-600">
+                    Live posts from our official Instagram.
+                    <a href="https://www.instagram.com/geistooffical/" target="_blank" rel="noopener noreferrer" class="text-accent underline hover-gold">Follow @geistooffical</a>
+                </p>
+            </div>
+
+            <!-- Profile bar -->
+            <div class="container">
+                <div class="ig-profile-bar glass-panel">
+                    <div class="ig-profile-avatar" aria-hidden="true">G</div>
+                    <div class="ig-profile-meta">
+                        <h3 class="ig-profile-username">
+                            <a href="https://www.instagram.com/geistooffical/" target="_blank" rel="noopener noreferrer">geistooffical</a>
+                        </h3>
+                        <p class="ig-profile-handle">GIESTO · Premium Menswear Atelier</p>
+                        <p class="ig-profile-bio">Bespoke tailoring, seasonal curations &amp; atelier moments — straight from our studio.</p>
+                    </div>
+                    <a href="https://www.instagram.com/geistooffical/" target="_blank" rel="noopener noreferrer" class="btn btn-primary ig-profile-follow">Follow on Instagram</a>
+                </div>
+            </div>
+
+            <!-- Live grid from Instagram (official embed) -->
+            <div class="container instagram-embed-profile-wrap">
+                <iframe
+                    class="instagram-profile-embed"
+                    src="https://www.instagram.com/geistooffical/embed"
+                    title="Instagram posts from @geistooffical"
+                    loading="lazy"
+                    allowfullscreen
+                    scrolling="no"
+                    allow="encrypted-media; clipboard-write">
+                </iframe>
+                <p class="ig-embed-note text-center">
+                    Viewing the official feed from
+                    <a href="https://www.instagram.com/geistooffical/" target="_blank" rel="noopener noreferrer">instagram.com/geistooffical</a>
+                </p>
+            </div>
+
+            <!-- Optional: pin specific posts (edit instagram-posts.js) -->
+            <div class="container instagram-embed-posts-wrap">
+                <h3 class="ig-featured-title text-center">Featured Posts</h3>
+                <p class="section-desc max-width-600 text-center ig-featured-hint">
+                    To highlight individual posts, add their links in <code>html/instagram-posts.js</code>.
+                </p>
+                <div id="instagram-embed-posts" class="instagram-embed-grid"></div>
+            </div>
+        </section>
+    </main>
+
+    <div data-include="partials/footer.html"></div>
+    <div data-include="partials/toast.html"></div>
+    <script src="instagram-posts.js"></script>
+    <script src="instagram-feed.js"></script>
+    <script src="includes.js"></script>
+</body>
+</html>

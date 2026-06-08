@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Book a bespoke consultation with GIESTO's private atelier concierge.">
+    <title>GIESTO | Bespoke Concierge</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body data-page="bespoke">
+
+    <div data-include="partials/header.html"></div>
+
+    <main>
+        <!-- EDIT: bespoke section -->
+<section class="bespoke-section" id="bespoke">
+            <div class="container grid grid-2-col glass-panel consultation-container">
+                <div class="consultation-info">
+                    <span class="section-tag text-accent">THE EXPERIENCE</span>
+                    <h2 class="section-title">The Bespoke <span class="serif text-italic">Concierge</span></h2>
+                    <p class="section-desc">Experience luxury standard styling. Book a one-on-one virtual styling review or request an in-person draping consultation at our private atelier. Let our head designer sketch a silhouette dedicated to your posture.</p>
+                    
+                    <ul class="concierge-list">
+                        <li>
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <span>1-on-1 private studio booking</span>
+                        </li>
+                        <li>
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <span>Custom fabric and metal hardware selection</span>
+                        </li>
+                        <li>
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <span>Advanced fit profile scanning</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Booking Form -->
+                <div class="consultation-form-block">
+                    <form id="booking-form" class="booking-form">
+                        <div class="form-group">
+                            <label for="booking-name" class="form-label">Full Name</label>
+                            <input type="text" id="booking-name" class="form-control" placeholder="E.g., Alexander Sterling" required>
+                        </div>
+                        <div class="form-group-row">
+                            <div class="form-group">
+                                <label for="booking-email" class="form-label">Email Address</label>
+                                <input type="email" id="booking-email" class="form-control" placeholder="E.g., alex@atelier.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="booking-service" class="form-label">Selected Styling Curation</label>
+                                <select id="booking-service" class="form-control">
+                                    <option value="bespoke-suit">Bespoke Suit Tailoring</option>
+                                    <option value="personal-styling">Personal Wardrobe Curation</option>
+                                    <option value="evening-draping">Imperial Evening Curation</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="booking-date" class="form-label">Preferred Consultation Date</label>
+                            <input type="date" id="booking-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="booking-notes" class="form-label">Atelier Notes / Look Preferences</label>
+                            <textarea id="booking-notes" class="form-control" rows="3" placeholder="Tell us about the event or your styling requirements..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Confirm Atelier Appointment</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <div data-include="partials/footer.html"></div>
+    <div data-include="partials/toast.html"></div>
+    <script src="includes.js"></script>
+</body>
+</html>

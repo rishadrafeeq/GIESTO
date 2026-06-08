@@ -1,0 +1,4 @@
+id,name,category,category_label,price,image,description,spec_fabric,spec_weight,spec_detail,spec_extra,active
+emerald-suit,The Giesto Emerald Suit,formal,Formal Wear,$1450 / Tailored,../assets/hero_suit.png,Double-breasted emerald suit with peak lapels.,85% Merino Wool 15% Silk,240g/m All-Season,10.5cm Peak Lapel,Cupro Bemberg lining,yes
+luxe-knit,Luxe Sage Knit & Cream Linen,casual,Casual Wear,$620 / Set,../assets/casual_luxe.png,Relaxed knit and linen set for day wear.,100% Organic Pima Cotton,Medium-Heavy Gauge,Belgian Flax Linen trousers,Relaxed fit,yes
+sports-track,Aero-Flex Track Jacket,sports,Sports Wear,$320 / Ready-to-Wear,../assets/evening_tux.png,Performance track jacket in emerald.,Recycled Poly-Elastane,Light Performance,Athletic Taper,Zip pockets,yes

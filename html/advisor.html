@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Take the GIESTO Style Advisor quiz and discover your signature look.">
+    <title>GIESTO | Style Advisor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body data-page="advisor">
+
+    <div data-include="partials/header.html"></div>
+
+    <main>
+        <!-- EDIT: advisor section -->
+<section class="advisor-section" id="advisor">
+            <div class="advisor-bg-accent"></div>
+            <div class="container grid grid-2-col align-center">
+                <div class="advisor-intro-block">
+                    <span class="section-tag text-accent">THE EXPERIENCE</span>
+                    <h2 class="section-title">The Giesto <br>Style <span class="serif text-italic">Advisor</span></h2>
+                    <p class="section-desc">Unlock a tailormade aesthetic curation without leaving your screen. Our interactive advisor analyzes your lifestyle preferences, color sensibilities, and fit goals to match you with a signature outfit composition.</p>
+                    
+                    <!-- Progress Bar for Quiz -->
+                    <div class="quiz-progress-container">
+                        <div class="quiz-progress-text">Quiz Progress: Step <span id="current-step-num">1</span> of 3</div>
+                        <div class="quiz-progress-bar-bg">
+                            <div class="quiz-progress-bar-fill" id="quiz-progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Card Container -->
+                <div class="advisor-quiz-card glass-panel" id="quiz-container">
+                    
+                    <!-- Step 1: Vibe -->
+                    <div class="quiz-step active" data-step="1">
+                        <h3 class="quiz-step-title">Select Your Styling Vibe</h3>
+                        <p class="quiz-step-subtitle">What statement do you wish to command?</p>
+                        <div class="quiz-options-grid">
+                            <button class="quiz-option-btn" data-key="vibe" data-value="sartorial">
+                                <span class="option-title">Classic Sartorial</span>
+                                <span class="option-desc">Double-breasted excellence and clean military-inspired lines.</span>
+                            </button>
+                            <button class="quiz-option-btn" data-key="vibe" data-value="casual">
+                                <span class="option-title">Luxe Casual</span>
+                                <span class="option-desc">Relaxed heavy-knit sage sweaters, breathable linen and unstructured jackets.</span>
+                            </button>
+                            <button class="quiz-option-btn" data-key="vibe" data-value="evening">
+                                <span class="option-title">Avant-Garde Evening</span>
+                                <span class="option-desc">Rich dark velvet textures, deep silk shawl lapels, and opulent silhouettes.</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Tone -->
+                    <div class="quiz-step" data-step="2">
+                        <h3 class="quiz-step-title">Choose Your Primary Shade</h3>
+                        <p class="quiz-step-subtitle">Select a color harmony that defines your skin tone and setting.</p>
+                        <div class="quiz-options-grid">
+                            <button class="quiz-option-btn" data-key="shade" data-value="emerald">
+                                <span class="option-title">Imperial Emerald</span>
+                                <span class="option-desc">Deep organic signature greens loaded with sophisticated royalty.</span>
+                            </button>
+                            <button class="quiz-option-btn" data-key="shade" data-value="obsidian">
+                                <span class="option-title">Obsidian Monochrome</span>
+                                <span class="option-desc">Crisp black velvets, midnight greys, and pure high-contrast tones.</span>
+                            </button>
+                            <button class="quiz-option-btn" data-key="shade" data-value="sage">
+                                <span class="option-title">Earthy Eucalyptus / Sage</span>
+                                <span class="option-desc">Soft, organic muted green tones perfect for architectural day settings.</span>
+                            </button>
+                        </div>
+                        <div class="quiz-nav">
+                            <button class="btn btn-secondary btn-small btn-prev">Back</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Highlight -->
+                    <div class="quiz-step" data-step="3">
+                        <h3 class="quiz-step-title">Specify Your Wardrobe Highlight</h3>
+                        <p class="quiz-step-subtitle">What structural element is non-negotiable for you?</p>
+                        <div class="quiz-options-grid">
+                            <button class="quiz-option-btn" data-key="highlight" data-value="cut">
+                                <span class="option-title">Precision Cut & Fit</span>
+                                <span class="option-desc">Tailoring that frames the shoulders and tapers perfectly at the waist.</span>
+                            </button>
+                            <button class="quiz-option-btn" data-key="highlight" data-value="textures">
+                                <span class="option-title">Rich Textural Contrast</span>
+                                <span class="option-desc">Layering velvet, silk, heavy knits, and premium linens.</span>
+                            </button>
+                            <button class="quiz-option-btn" data-key="highlight" data-value="layering">
+                                <span class="option-title">Effortless Layering</span>
+                                <span class="option-desc">Relaxed styling combinations that easily move from afternoon to lounge.</span>
+                            </button>
+                        </div>
+                        <div class="quiz-nav">
+                            <button class="btn btn-secondary btn-small btn-prev">Back</button>
+                        </div>
+                    </div>
+
+                    <!-- Recommendation Slide -->
+                    <div class="quiz-stepResult" id="quiz-result-slide">
+                        <div class="result-header">
+                            <span class="result-badge">YOUR RECOMMENDED LOOK</span>
+                            <h3 class="result-title" id="result-look-title">The Sovereign Emerald Sartorial</h3>
+                        </div>
+                        <div class="result-body grid grid-2-col gap-small">
+                            <div class="result-swatch-box">
+                                <span class="swatch-label">Color Curation</span>
+                                <div class="swatches-row" id="result-swatches">
+                                    <!-- Dynamic Swatches -->
+                                </div>
+                            </div>
+                            <div class="result-description-box">
+                                <p id="result-look-desc">Your profile signals an affinity for commanding tailoring. We suggest our signature Emerald Double-Breasted Suit crafted from Super 150s Merino Wool. Pair it with an organic sage pocket square and premium oxfords for the ultimate visual assertion.</p>
+                            </div>
+                        </div>
+                        <div class="result-cta-block">
+                            <button class="btn btn-primary" id="btn-apply-look">Consult a Stylist for this Look</button>
+                            <button class="btn btn-secondary" id="btn-restart-quiz">Retake styling quiz</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <div data-include="partials/footer.html"></div>
+    <div data-include="partials/toast.html"></div>
+    <script src="includes.js"></script>
+</body>
+</html>

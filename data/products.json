@@ -1,0 +1,100 @@
+{
+  "products": [
+    {
+      "id": "emerald-suit",
+      "name": "The Giesto Emerald Suit",
+      "category": "formal",
+      "categoryLabel": "Formal Wear",
+      "price": "$1,450 / Tailored",
+      "image": "../assets/hero_suit.png",
+      "description": "A masterwork in signature coloration. Double-breasted coat with structured roped shoulders and wide peak lapels in Super 150s wool-silk blend.",
+      "specs": {
+        "fabric": "85% Merino Wool, 15% Mulberry Silk",
+        "weight": "240g/m (All-Season)",
+        "lapel": "10.5cm Peak Lapel",
+        "lining": "100% Cupro Bemberg (Sage Green)"
+      },
+      "active": true
+    },
+    {
+      "id": "formal-blazer",
+      "name": "Forest Peak Lapel Blazer",
+      "category": "formal",
+      "categoryLabel": "Formal Wear",
+      "price": "$980 / Tailored",
+      "image": "../assets/suit_atelier.png",
+      "description": "Refined single-breasted blazer in deep forest wool with structured shoulders and signature emerald lining.",
+      "specs": {
+        "fabric": "100% Super 120s Merino Wool",
+        "weight": "280g/m (Year-Round)",
+        "lapel": "8cm Peak Lapel",
+        "lining": "Cupro Bemberg (Emerald)"
+      },
+      "active": true
+    },
+    {
+      "id": "luxe-knit",
+      "name": "Luxe Sage Knit & Cream Linen",
+      "category": "casual",
+      "categoryLabel": "Casual Wear",
+      "price": "$620 / Set",
+      "image": "../assets/casual_luxe.png",
+      "description": "Heavy crewneck sweater with tailored off-white linen trousers for relaxed luxury.",
+      "specs": {
+        "fabric": "Sweater: 100% Organic Pima Cotton",
+        "weight": "Medium-Heavy Gauge",
+        "trousers": "100% Belgian Flax Linen",
+        "fit": "Relaxed Atelier Curation"
+      },
+      "active": true
+    },
+    {
+      "id": "casual-blazer",
+      "name": "Unstructured Emerald Blazer",
+      "category": "casual",
+      "categoryLabel": "Casual Wear",
+      "price": "$540 / Ready-to-Wear",
+      "image": "../assets/hero_suit.png",
+      "description": "Soft-shoulder blazer for smart-casual days. Pairs with denim, chinos, or sage knit staples.",
+      "specs": {
+        "fabric": "Cotton-Linen Blend",
+        "weight": "Lightweight",
+        "fit": "Relaxed Contemporary",
+        "lining": "Partial Unlined Back"
+      },
+      "active": true
+    },
+    {
+      "id": "sports-track",
+      "name": "Aero-Flex Track Jacket",
+      "category": "sports",
+      "categoryLabel": "Sports Wear",
+      "price": "$320 / Ready-to-Wear",
+      "image": "../assets/evening_tux.png",
+      "description": "Breathable stretch shell with moisture-wicking lining in signature emerald.",
+      "specs": {
+        "fabric": "Recycled Poly-Elastane Blend",
+        "weight": "Light Performance",
+        "fit": "Athletic Taper",
+        "features": "Zip Pockets, Ventilated Back Panel"
+      },
+      "active": true
+    },
+    {
+      "id": "sports-joggers",
+      "name": "Sage Performance Jogger Set",
+      "category": "sports",
+      "categoryLabel": "Sports Wear",
+      "price": "$285 / Set",
+      "image": "../assets/casual_luxe.png",
+      "description": "Matching jogger and quarter-zip set with four-way stretch and quick-dry finish.",
+      "specs": {
+        "fabric": "Organic Cotton-Poly Blend",
+        "weight": "Midweight Knit",
+        "fit": "Tapered Leg",
+        "care": "Machine Wash Cold"
+      },
+      "active": true
+    }
+  ]
+}
