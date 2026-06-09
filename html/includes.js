@@ -1,30 +1,21 @@
-/**
- * Loads shared HTML partials (header, footer, etc.) into each page.
- * Requires a local server (e.g. Live Server) — fetch does not work on file://
- */
 (async function loadPartials() {
     const slots = document.querySelectorAll('[data-include]');
-
     await Promise.all([...slots].map(async (slot) => {
         const path = slot.getAttribute('data-include');
         try {
-            const response = await fetch(path);
-            if (response.ok) {
-                slot.outerHTML = await response.text();
-            }
+            const res = await fetch(path);
+            if (res.ok) slot.outerHTML = await res.text();
         } catch (err) {
-            console.warn('Could not load partial:', path, err);
+            console.warn('Partial load failed:', path);
         }
     }));
 
-    // Highlight current page in navigation
-    const currentPage = document.body.dataset.page;
-    if (currentPage) {
-        document.querySelector(`.nav-link[data-nav="${currentPage}"]`)?.classList.add('active');
+    const page = document.body.dataset.page;
+    if (page) {
+        document.querySelector(`.nav-link[data-nav="${page}"]`)?.classList.add('active');
     }
 
-    // Load main app logic after partials are in place
     const script = document.createElement('script');
-    script.src = '../app.js';
+    script.src = '../js/shop-ui.js';
     document.body.appendChild(script);
 })();

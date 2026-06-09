@@ -1,12 +1,14 @@
-/**
- * SETUP (once, by you or developer):
- * 1. Create a Google Sheet from data/products-template.csv
- * 2. Share edit access with your client
- * 3. File → Share → Publish to web → CSV → copy the link
- * 4. Paste the link below in googleSheetCsvUrl and set productsSource to 'sheets'
- */
 window.GIESTO_CONFIG = {
-    productsSource: 'json',
+    shopName: 'GIESTO',
+    tagline: "Trendy Men's Fashion & Streetwear",
+    whatsappNumber: '919876543210',
+    adminPin: 'giesto2026',
     productsJsonUrl: '../data/products.json',
-    googleSheetCsvUrl: ''
+    currency: '₹',
+    instagramUrl: 'https://www.instagram.com/geistooffical/',
+    categories: {
+        formal: { label: 'Formal Wear', shopLabel: 'Formal' },
+        casual: { label: 'Casual Wear', shopLabel: 'Casual' },
+        sports: { label: 'Sports Wear', shopLabel: 'Sportswear' }
+    }
 };

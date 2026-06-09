@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIESTO Admin — Manage Products</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body class="admin-page">
+
+    <div id="admin-login" class="admin-login-wrap">
+        <form id="login-form" class="admin-login-card">
+            <h1>GIESTO Admin</h1>
+            <p>Enter your staff PIN to manage products, sizes & stock.</p>
+            <label for="login-pin">PIN</label>
+            <input type="password" id="login-pin" class="form-control" placeholder="Enter PIN" required>
+            <button type="submit" class="btn btn-dark btn-block">Login</button>
+            <p class="admin-hint">Default PIN: <code>giesto2026</code> — change in <code>data/site-config.js</code></p>
+            <a href="index.html" class="admin-back">← Back to shop</a>
+        </form>
+    </div>
+
+    <div id="admin-panel" hidden>
+        <header class="admin-topbar">
+            <div class="container admin-topbar-inner">
+                <h1>Product Manager</h1>
+                <div class="admin-top-actions">
+                    <button type="button" class="btn btn-outline" id="btn-export">Download backup</button>
+                    <label class="btn btn-outline btn-file">
+                        Import backup
+                        <input type="file" id="import-file" accept=".json" hidden>
+                    </label>
+                    <button type="button" class="btn btn-outline" id="btn-reset">Reset defaults</button>
+                    <button type="button" class="btn btn-dark" id="btn-add">+ Add product</button>
+                    <button type="button" class="btn btn-small" id="btn-logout">Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="container admin-body">
+            <div class="admin-help">
+                <strong>How to use:</strong> Add products here → pick category (Formal / Casual / Sports auto-sorts on shop) → set size & quantity → upload photo → Save.
+                Changes appear on the website immediately. Use <strong>Download backup</strong> to save a copy.
+            </div>
+
+            <div id="product-list" class="admin-list"></div>
+
+            <form id="product-form" class="admin-form" hidden>
+                <h2 id="form-title">Add new product</h2>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-id">Product ID (unique, no spaces)</label>
+                        <input type="text" id="f-id" class="form-control" placeholder="e.g. navy-linen-shirt" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-name">Product name</label>
+                        <input type="text" id="f-name" class="form-control" placeholder="Navy Blue Linen Shirt" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="f-category">Category</label>
+                        <select id="f-category" class="form-control" required>
+                            <option value="formal">Formal Wear</option>
+                            <option value="casual">Casual Wear</option>
+                            <option value="sports">Sports Wear</option>
+                        </select>
+                        <small id="category-hint" class="field-hint">Shows under: Casual Wear</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-price">Price (₹)</label>
+                        <input type="number" id="f-price" class="form-control" min="0" step="1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="f-sale">Sale price (optional)</label>
+                        <input type="number" id="f-sale" class="form-control" min="0" step="1">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="f-desc">Description</label>
+                    <textarea id="f-desc" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Product photo</label>
+                    <div class="image-upload-row">
+                        <img id="f-image-preview" src="../assets/hero_suit.png" alt="Preview" class="admin-preview-img">
+                        <div>
+                            <input type="file" id="f-image-file" accept="image/*">
+                            <p class="field-hint">Upload a photo (max 800KB) OR paste image path below:</p>
+                            <input type="text" id="f-image-path" class="form-control" placeholder="../assets/my-product.png">
+                            <input type="hidden" id="f-image-data">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Sizes & stock quantity</label>
+                    <p class="field-hint">Add each size and how many pieces are left. Set 0 to mark out of stock.</p>
+                    <div id="size-rows" class="size-rows"></div>
+                    <button type="button" class="btn btn-outline btn-small" id="btn-add-size">+ Add size</button>
+                </div>
+
+                <div class="form-checks">
+                    <label><input type="checkbox" id="f-featured"> Show in New Arrivals</label>
+                    <label><input type="checkbox" id="f-active" checked> Visible on shop</label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-dark">Save product</button>
+                    <button type="button" class="btn btn-outline" id="btn-cancel">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="admin-toast" class="admin-toast"></div>
+
+    <script src="../data/site-config.js"></script>
+    <script src="../js/products-store.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

@@ -6,7 +6,7 @@
       "category": "formal",
       "price": 14500,
       "salePrice": 12900,
-      "image": "../assets/hero_suit.png",
+      "image": "/assets/hero_suit.png",
       "description": "Structured double-breasted suit in signature emerald. Precision tailoring for boardroom and evening events.",
       "sizes": [
         { "size": "S", "stock": 4 },
@@ -23,7 +23,7 @@
       "category": "formal",
       "price": 9800,
       "salePrice": null,
-      "image": "../assets/suit_atelier.png",
+      "image": "/assets/suit_atelier.png",
       "description": "Refined single-breasted blazer in deep forest wool with structured shoulders.",
       "sizes": [
         { "size": "M", "stock": 3 },
@@ -39,7 +39,7 @@
       "category": "casual",
       "price": 6200,
       "salePrice": 5499,
-      "image": "../assets/casual_luxe.png",
+      "image": "/assets/casual_luxe.png",
       "description": "Relaxed luxury knit paired with breathable cream linen trousers.",
       "sizes": [
         { "size": "S", "stock": 8 },
@@ -55,7 +55,7 @@
       "category": "casual",
       "price": 5400,
       "salePrice": null,
-      "image": "../assets/hero_suit.png",
+      "image": "/assets/hero_suit.png",
       "description": "Soft-shoulder blazer for smart-casual days.",
       "sizes": [
         { "size": "M", "stock": 2 },
@@ -70,7 +70,7 @@
       "category": "sports",
       "price": 3200,
       "salePrice": 2799,
-      "image": "../assets/evening_tux.png",
+      "image": "/assets/evening_tux.png",
       "description": "Breathable stretch shell with moisture-wicking lining.",
       "sizes": [
         { "size": "S", "stock": 5 },
@@ -87,7 +87,7 @@
       "category": "sports",
       "price": 2850,
       "salePrice": null,
-      "image": "../assets/casual_luxe.png",
+      "image": "/assets/casual_luxe.png",
       "description": "Four-way stretch jogger set with quick-dry finish.",
       "sizes": [
         { "size": "M", "stock": 0 },

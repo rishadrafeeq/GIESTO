@@ -16,3 +16,7 @@ desktop.ini
 # Logs & temp
 *.log
 ig-scrape.txt
+
+# React / Vite
+node_modules/
+dist/
