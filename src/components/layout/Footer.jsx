@@ -32,7 +32,6 @@ export default function Footer() {
           <h4>Quick Links</h4>
           <ul>
             <li><Link to="/lookbook">Lookbook</Link></li>
-            <li><Link to="/admin">Admin (staff)</Link></li>
           </ul>
         </div>
         <div className="footer-newsletter">
