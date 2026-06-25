@@ -654,7 +654,26 @@ button { font-family: inherit; cursor: pointer; border: none; background: none; 
     .nav-list { flex-direction: column; align-items: flex-start; gap: 2rem; }
     .nav-dropdown-menu { position: static; opacity: 1; visibility: visible; transform: none; border: none; box-shadow: none; padding: .8rem 0 0 1rem; }
     .product-grid { grid-template-columns: repeat(2, 1fr); gap: 1.6rem 1rem; }
-    .category-grid { grid-template-columns: 1fr; }
+    .category-grid {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 1.2rem;
+        grid-template-columns: unset;
+        scroll-snap-type: x proximity;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 0.4rem;
+    }
+    .category-grid::-webkit-scrollbar { display: none; }
+    .category-card {
+        flex: 0 0 min(180px, 42vw);
+        min-width: 140px;
+        scroll-snap-align: start;
+    }
+    .category-card-img { height: 200px; }
+    .category-card h3 { font-size: 1.4rem; padding: 1rem 0.6rem 0.3rem; }
+    .category-card p { font-size: 1.1rem; padding-bottom: 1rem; }
     .shop-tabs { overflow-x: auto; }
     .footer-grid { grid-template-columns: 1fr; }
     .admin-stats { grid-template-columns: repeat(2, 1fr); }
