@@ -1,0 +1,35 @@
+{
+  "updatedAt": "2026-06-25T00:00:00.000Z",
+  "categories": [
+    {
+      "id": "formal",
+      "label": "Formal Wear",
+      "shopLabel": "Formal",
+      "image": "/assets/hero_suit.png"
+    },
+    {
+      "id": "casual",
+      "label": "Casual Wear",
+      "shopLabel": "Casual",
+      "image": "/assets/casual_luxe.png"
+    },
+    {
+      "id": "sports",
+      "label": "Sports Wear",
+      "shopLabel": "Sportswear",
+      "image": "/assets/evening_tux.png"
+    },
+    {
+      "id": "watches",
+      "label": "Watches",
+      "shopLabel": "Watches",
+      "image": "/assets/suit_atelier.png"
+    },
+    {
+      "id": "sunglasses",
+      "label": "Sunglasses",
+      "shopLabel": "Sunglasses",
+      "image": "/assets/casual_luxe.png"
+    }
+  ]
+}

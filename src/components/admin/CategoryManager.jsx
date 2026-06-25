@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useCategories } from '../../context/CategoriesContext';
 import { useProducts } from '../../context/ProductsContext';
+import { categoryImageUrl } from '../../utils/categoryHelpers';
 
 function CategoryCoverField({ image, imagePath, onImageChange, onPathChange, error, idPrefix }) {
   const handleFile = (e) => {
@@ -48,7 +49,7 @@ function CategoryCoverField({ image, imagePath, onImageChange, onPathChange, err
 }
 
 export default function CategoryManager({ onNotify }) {
-  const { categoryList, addCategory, removeCategory, updateCategory } = useCategories();
+  const { categoryList, addCategory, removeCategory, updateCategory, updatedAt } = useCategories();
   const { products } = useProducts();
   const [label, setLabel] = useState('');
   const [shopLabel, setShopLabel] = useState('');
@@ -61,6 +62,7 @@ export default function CategoryManager({ onNotify }) {
   const [editImage, setEditImage] = useState('');
   const [editImagePath, setEditImagePath] = useState('');
   const [editImageError, setEditImageError] = useState('');
+  const [saving, setSaving] = useState(false);
 
   const countFor = (id) => products.filter((p) => p.category === id).length;
 
@@ -77,10 +79,12 @@ export default function CategoryManager({ onNotify }) {
     if (path.trim()) setImage(path.trim());
   };
 
-  const handleAdd = (e) => {
+  const handleAdd = async (e) => {
     e.preventDefault();
     setError('');
-    const result = addCategory({ label, shopLabel, image });
+    setSaving(true);
+    const result = await addCategory({ label, shopLabel, image });
+    setSaving(false);
     if (!result.ok) {
       setError(result.error);
       return;
@@ -90,13 +94,13 @@ export default function CategoryManager({ onNotify }) {
     setImage('/assets/hero_suit.png');
     setImagePath('');
     setImageError('');
-    onNotify?.('Category added.');
+    onNotify?.('Category added — visible on all devices.');
   };
 
   const openEditCover = (cat) => {
     setEditingId(cat.id);
     setEditImage(cat.image);
-    setEditImagePath(cat.image.startsWith('data:') ? '' : cat.image);
+    setEditImagePath(cat.image.startsWith('data:') || cat.image.startsWith('http') ? '' : cat.image);
     setEditImageError('');
   };
 
@@ -120,17 +124,19 @@ export default function CategoryManager({ onNotify }) {
     if (path.trim()) setEditImage(path.trim());
   };
 
-  const saveEditCover = () => {
+  const saveEditCover = async () => {
     if (!editImage.trim()) {
       setEditImageError('Choose a cover photo or enter an image path.');
       return;
     }
-    const result = updateCategory(editingId, { image: editImage });
+    setSaving(true);
+    const result = await updateCategory(editingId, { image: editImage });
+    setSaving(false);
     if (!result.ok) {
       onNotify?.(result.error);
       return;
     }
-    onNotify?.('Category cover updated.');
+    onNotify?.('Category cover updated — visible on all devices.');
     closeEditCover();
   };
 
@@ -144,8 +150,10 @@ export default function CategoryManager({ onNotify }) {
     setRemovingId(id);
   };
 
-  const confirmRemove = () => {
-    const result = removeCategory(removingId, countFor(removingId));
+  const confirmRemove = async () => {
+    setSaving(true);
+    const result = await removeCategory(removingId, countFor(removingId));
+    setSaving(false);
     setRemovingId(null);
     if (!result.ok) {
       onNotify?.(result.error);
@@ -161,7 +169,7 @@ export default function CategoryManager({ onNotify }) {
       <form className="admin-category-add" onSubmit={handleAdd}>
         <h3>Add category</h3>
         <p className="field-hint section-hint">
-          Add Watches, Sunglasses, or any new collection. It appears on the shop homepage and filters.
+          Add Watches, Sunglasses, or any new collection. Changes sync to phones and all devices.
         </p>
         {error && <div className="admin-alert admin-alert-error">{error}</div>}
         <div className="form-row">
@@ -198,7 +206,9 @@ export default function CategoryManager({ onNotify }) {
             error={imageError}
           />
         </div>
-        <button type="submit" className="btn btn-dark btn-small">+ Add category</button>
+        <button type="submit" className="btn btn-dark btn-small" disabled={saving}>
+          {saving ? 'Saving…' : '+ Add category'}
+        </button>
       </form>
 
       <div className="admin-category-list-wrap">
@@ -208,9 +218,10 @@ export default function CategoryManager({ onNotify }) {
             const count = countFor(cat.id);
             return (
               <li key={cat.id} className="admin-category-item">
-                <div
+                <img
+                  src={categoryImageUrl(cat.image, updatedAt)}
+                  alt=""
                   className="admin-category-thumb"
-                  style={{ backgroundImage: `url(${cat.image})` }}
                 />
                 <div className="admin-category-info">
                   <strong>{cat.label}</strong>
@@ -251,7 +262,7 @@ export default function CategoryManager({ onNotify }) {
           >
             <h3>Edit cover — {editingCategory.label}</h3>
             <p className="field-hint section-hint">
-              This image appears on the shop homepage category cards.
+              This image appears on the shop homepage category cards on every device.
             </p>
             <CategoryCoverField
               idPrefix="cat-edit"
@@ -265,8 +276,8 @@ export default function CategoryManager({ onNotify }) {
               <button type="button" className="btn btn-outline" onClick={closeEditCover}>
                 Cancel
               </button>
-              <button type="button" className="btn btn-dark" onClick={saveEditCover}>
-                Save cover
+              <button type="button" className="btn btn-dark" onClick={saveEditCover} disabled={saving}>
+                {saving ? 'Saving…' : 'Save cover'}
               </button>
             </div>
           </div>

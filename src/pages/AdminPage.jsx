@@ -16,7 +16,7 @@ import { useProducts } from '../context/ProductsContext';
 
 import { exportJson, normalizeProduct, totalStock } from '../utils/productHelpers';
 
-import { mapToCategoryList, saveCategoriesToStorage } from '../utils/categoryHelpers';
+import { mapToCategoryList } from '../utils/categoryHelpers';
 
 import { siteConfig } from '../config/siteConfig';
 
@@ -60,7 +60,7 @@ export default function AdminPage() {
 
   const { products, saveProducts, resetProducts } = useProducts();
 
-  const { categoryList, categories, resetCategories } = useCategories();
+  const { categoryList, categories, resetCategories, saveCategories } = useCategories();
 
   const [authed, setAuthed] = useState(isAdminAuthed());
 
@@ -242,7 +242,11 @@ export default function AdminPage() {
         const cats = Array.isArray(data.categories)
           ? data.categories
           : mapToCategoryList(data.categories);
-        saveCategoriesToStorage(cats);
+        const catResult = await saveCategories(cats);
+        if (!catResult.ok) {
+          notify(catResult.error || 'Failed to sync categories.');
+          return;
+        }
         window.location.reload();
         return;
       }

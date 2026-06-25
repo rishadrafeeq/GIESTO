@@ -42,18 +42,88 @@ export function mapToCategoryList(map) {
   );
 }
 
-export function loadCategories() {
+function parseCategoriesPayload(data) {
+  const list = data.categories || data;
+  const categories = (Array.isArray(list) ? list : mapToCategoryList(list)).map((c) =>
+    normalizeCategoryEntry(c.id, c)
+  );
+  return { categories, updatedAt: data.updatedAt || null };
+}
+
+export function loadCategoriesFromLocalStorage() {
   try {
     const raw = localStorage.getItem(CATEGORIES_STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed)) return parsed.map((c) => normalizeCategoryEntry(c.id, c));
+      if (Array.isArray(parsed)) {
+        return parsed.map((c) => normalizeCategoryEntry(c.id, c));
+      }
       return mapToCategoryList(parsed);
     }
   } catch {
     /* use defaults */
   }
-  return mapToCategoryList(getDefaultCategories());
+  return null;
+}
+
+/** @deprecated Use fetchCategoriesFromServer — kept for legacy callers */
+export function loadCategories() {
+  return loadCategoriesFromLocalStorage() || mapToCategoryList(getDefaultCategories());
+}
+
+export async function fetchCategoriesFromServer() {
+  try {
+    const res = await fetch('/api/categories', { cache: 'no-store' });
+    if (res.ok) return parseCategoriesPayload(await res.json());
+  } catch {
+    /* try static file */
+  }
+
+  const res = await fetch(`/data/categories.json?t=${Date.now()}`, { cache: 'no-store' });
+  if (!res.ok) throw new Error('Failed to load categories');
+  return parseCategoriesPayload(await res.json());
+}
+
+export async function saveCategoriesToServer(categoryList, pin) {
+  const normalized = categoryList.map((c) => normalizeCategoryEntry(c.id, c));
+  const res = await fetch('/api/categories', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    cache: 'no-store',
+    body: JSON.stringify({ pin, categories: normalized }),
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed to save categories for all devices');
+  }
+
+  return { categories: normalized, updatedAt: data.updatedAt || new Date().toISOString() };
+}
+
+export async function uploadCategoryImage(imageData, categoryId, pin) {
+  if (!imageData?.startsWith('data:')) return imageData;
+
+  const res = await fetch('/api/upload-image', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ pin, imageData, categoryId }),
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed to upload cover photo');
+  }
+
+  return data.url;
+}
+
+export function categoryImageUrl(image, updatedAt) {
+  if (!image) return '/assets/hero_suit.png';
+  if (image.startsWith('data:') || image.startsWith('http')) return image;
+  if (!updatedAt) return image;
+  const sep = image.includes('?') ? '&' : '?';
+  return `${image}${sep}v=${encodeURIComponent(updatedAt)}`;
 }
 
 export function saveCategoriesToStorage(categoryList) {

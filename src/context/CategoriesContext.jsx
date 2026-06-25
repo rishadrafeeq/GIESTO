@@ -1,38 +1,75 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { siteConfig } from '../config/siteConfig';
 import {
   getDefaultCategories,
   getCategoriesMap,
   getCategoryLabel,
   getCategoryShopLabel,
-  loadCategories,
   mapToCategoryList,
   normalizeCategoryEntry,
   saveCategoriesToStorage,
-  slugifyCategoryKey,
   clearCategoriesStorage,
+  slugifyCategoryKey,
+  fetchCategoriesFromServer,
+  saveCategoriesToServer,
+  uploadCategoryImage,
 } from '../utils/categoryHelpers';
 
 const CategoriesContext = createContext(null);
 
 export function CategoriesProvider({ children }) {
-  const [categoryList, setCategoryList] = useState(() => {
-    const loaded = loadCategories();
-    if (!localStorage.getItem('giesto_categories_v1')) {
-      saveCategoriesToStorage(loaded);
+  const [categoryList, setCategoryList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [updatedAt, setUpdatedAt] = useState(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const { categories, updatedAt: remoteUpdatedAt } = await fetchCategoriesFromServer();
+      setCategoryList(categories);
+      setUpdatedAt(remoteUpdatedAt);
+      saveCategoriesToStorage(categories);
+    } catch {
+      const defaults = mapToCategoryList(getDefaultCategories());
+      setCategoryList(defaults);
+      setUpdatedAt(null);
     }
-    return loaded;
-  });
-
-  const categories = useMemo(() => getCategoriesMap(categoryList), [categoryList]);
-
-  const saveCategories = useCallback((list) => {
-    const saved = saveCategoriesToStorage(list);
-    setCategoryList(saved);
-    return saved;
+    setLoading(false);
   }, []);
 
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const persistCategories = useCallback(async (list, { imageUploads = [] } = {}) => {
+    let next = list.map((c) => normalizeCategoryEntry(c.id, c));
+
+    for (const { id, image } of imageUploads) {
+      if (!image?.startsWith('data:')) continue;
+      const url = await uploadCategoryImage(image, id, siteConfig.adminPin);
+      next = next.map((c) => (c.id === id ? { ...c, image: url } : c));
+    }
+
+    const result = await saveCategoriesToServer(next, siteConfig.adminPin);
+    setCategoryList(result.categories);
+    setUpdatedAt(result.updatedAt);
+    saveCategoriesToStorage(result.categories);
+    return { ok: true, categories: result.categories };
+  }, []);
+
+  const saveCategories = useCallback(
+    async (list, options) => {
+      try {
+        return await persistCategories(list, options);
+      } catch (err) {
+        return { ok: false, error: err.message || 'Failed to save categories' };
+      }
+    },
+    [persistCategories]
+  );
+
   const addCategory = useCallback(
-    ({ label, shopLabel, image }) => {
+    async ({ label, shopLabel, image }) => {
       const trimmed = String(label || '').trim();
       if (!trimmed) return { ok: false, error: 'Category name is required.' };
 
@@ -42,22 +79,22 @@ export function CategoriesProvider({ children }) {
         return { ok: false, error: 'A category with this name already exists.' };
       }
 
-      const next = [
-        ...categoryList,
-        normalizeCategoryEntry(id, {
-          label: trimmed,
-          shopLabel: shopLabel?.trim() || trimmed,
-          image: image?.trim() || '/assets/hero_suit.png',
-        }),
-      ];
-      saveCategories(next);
-      return { ok: true };
+      const entry = normalizeCategoryEntry(id, {
+        label: trimmed,
+        shopLabel: shopLabel?.trim() || trimmed,
+        image: image?.trim() || '/assets/hero_suit.png',
+      });
+
+      const next = [...categoryList, entry];
+      return saveCategories(next, {
+        imageUploads: image?.startsWith('data:') ? [{ id, image }] : [],
+      });
     },
     [categoryList, saveCategories]
   );
 
   const removeCategory = useCallback(
-    (id, productCount = 0) => {
+    async (id, productCount = 0) => {
       if (categoryList.length <= 1) {
         return { ok: false, error: 'You must keep at least one category.' };
       }
@@ -67,14 +104,13 @@ export function CategoriesProvider({ children }) {
           error: `${productCount} product(s) use this category. Move or remove them first.`,
         };
       }
-      saveCategories(categoryList.filter((c) => c.id !== id));
-      return { ok: true };
+      return saveCategories(categoryList.filter((c) => c.id !== id));
     },
     [categoryList, saveCategories]
   );
 
   const updateCategory = useCallback(
-    (id, updates) => {
+    async (id, updates) => {
       const index = categoryList.findIndex((c) => c.id === id);
       if (index === -1) return { ok: false, error: 'Category not found.' };
 
@@ -86,32 +122,43 @@ export function CategoriesProvider({ children }) {
         shopLabel: updates.shopLabel?.trim() || current.shopLabel,
         image: updates.image?.trim() || current.image,
       });
-      saveCategories(next);
-      return { ok: true };
+
+      const image = updates.image?.trim();
+      return saveCategories(next, {
+        imageUploads: image?.startsWith('data:') ? [{ id, image }] : [],
+      });
     },
     [categoryList, saveCategories]
   );
 
-  const resetCategories = useCallback(() => {
+  const resetCategories = useCallback(async () => {
     clearCategoriesStorage();
     const defaults = mapToCategoryList(getDefaultCategories());
-    saveCategories(defaults);
+    const result = await saveCategories(defaults);
+    if (!result.ok) {
+      setCategoryList(defaults);
+      setUpdatedAt(null);
+      saveCategoriesToStorage(defaults);
+    }
     return defaults;
   }, [saveCategories]);
 
   const value = useMemo(
     () => ({
       categoryList,
-      categories,
+      categories: getCategoriesMap(categoryList),
+      loading,
+      updatedAt,
+      reload: load,
       saveCategories,
       addCategory,
       removeCategory,
       updateCategory,
       resetCategories,
-      getLabel: (id) => getCategoryLabel(id, categories),
-      getShopLabel: (id) => getCategoryShopLabel(id, categories),
+      getLabel: (id) => getCategoryLabel(id, getCategoriesMap(categoryList)),
+      getShopLabel: (id) => getCategoryShopLabel(id, getCategoriesMap(categoryList)),
     }),
-    [categoryList, categories, saveCategories, addCategory, removeCategory, updateCategory, resetCategories]
+    [categoryList, loading, updatedAt, load, saveCategories, addCategory, removeCategory, updateCategory, resetCategories]
   );
 
   return <CategoriesContext.Provider value={value}>{children}</CategoriesContext.Provider>;
