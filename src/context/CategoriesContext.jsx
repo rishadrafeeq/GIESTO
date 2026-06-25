@@ -73,6 +73,25 @@ export function CategoriesProvider({ children }) {
     [categoryList, saveCategories]
   );
 
+  const updateCategory = useCallback(
+    (id, updates) => {
+      const index = categoryList.findIndex((c) => c.id === id);
+      if (index === -1) return { ok: false, error: 'Category not found.' };
+
+      const current = categoryList[index];
+      const next = [...categoryList];
+      next[index] = normalizeCategoryEntry(id, {
+        ...current,
+        label: updates.label?.trim() || current.label,
+        shopLabel: updates.shopLabel?.trim() || current.shopLabel,
+        image: updates.image?.trim() || current.image,
+      });
+      saveCategories(next);
+      return { ok: true };
+    },
+    [categoryList, saveCategories]
+  );
+
   const resetCategories = useCallback(() => {
     clearCategoriesStorage();
     const defaults = mapToCategoryList(getDefaultCategories());
@@ -87,11 +106,12 @@ export function CategoriesProvider({ children }) {
       saveCategories,
       addCategory,
       removeCategory,
+      updateCategory,
       resetCategories,
       getLabel: (id) => getCategoryLabel(id, categories),
       getShopLabel: (id) => getCategoryShopLabel(id, categories),
     }),
-    [categoryList, categories, saveCategories, addCategory, removeCategory, resetCategories]
+    [categoryList, categories, saveCategories, addCategory, removeCategory, updateCategory, resetCategories]
   );
 
   return <CategoriesContext.Provider value={value}>{children}</CategoriesContext.Provider>;
