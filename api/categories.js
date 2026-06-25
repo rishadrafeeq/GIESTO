@@ -1,4 +1,9 @@
-import { put, head } from '@vercel/blob';
+import { get, put } from '@vercel/blob';
+import {
+  BLOB_ACCESS,
+  blobStorageError,
+  isBlobStorageReady,
+} from './lib/blob.js';
 
 const CATEGORIES_PATH = 'giesto/categories.json';
 
@@ -27,16 +32,16 @@ async function readStaticCategories(request) {
 }
 
 async function readBlobCategories() {
-  const meta = await head(CATEGORIES_PATH);
-  const res = await fetch(meta.url, { cache: 'no-store' });
-  if (!res.ok) throw new Error('Failed to read categories from storage');
-  return res.json();
+  const result = await get(CATEGORIES_PATH, { access: BLOB_ACCESS });
+  if (!result) throw new Error('Categories not found in blob storage');
+  const text = await new Response(result.stream).text();
+  return JSON.parse(text);
 }
 
 export async function GET(request) {
   const headers = { 'Cache-Control': 'no-store, max-age=0, must-revalidate' };
 
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
+  if (isBlobStorageReady()) {
     try {
       const data = await readBlobCategories();
       return Response.json(
@@ -77,14 +82,8 @@ export async function POST(request) {
 
   if (body.pin !== getAdminPin()) return unauthorized();
 
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    return Response.json(
-      {
-        error:
-          'Server storage is not set up. In Vercel → Storage → create a Blob store and link it to this project, then redeploy.',
-      },
-      { status: 503 }
-    );
+  if (!isBlobStorageReady()) {
+    return Response.json({ error: blobStorageError() }, { status: 503 });
   }
 
   const payload = {
@@ -92,11 +91,19 @@ export async function POST(request) {
     updatedAt: new Date().toISOString(),
   };
 
-  await put(CATEGORIES_PATH, JSON.stringify(payload), {
-    access: 'public',
-    contentType: 'application/json',
-    addRandomSuffix: false,
-  });
+  try {
+    await put(CATEGORIES_PATH, JSON.stringify(payload), {
+      access: BLOB_ACCESS,
+      contentType: 'application/json',
+      addRandomSuffix: false,
+      allowOverwrite: true,
+    });
+  } catch (err) {
+    return Response.json(
+      { error: err.message || 'Failed to save categories to storage' },
+      { status: 500 }
+    );
+  }
 
   return Response.json({ ok: true, updatedAt: payload.updatedAt });
 }

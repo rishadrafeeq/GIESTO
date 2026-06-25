@@ -1,4 +1,10 @@
 import { put } from '@vercel/blob';
+import {
+  BLOB_ACCESS,
+  blobStorageError,
+  coverImageApiUrl,
+  isBlobStorageReady,
+} from './lib/blob.js';
 
 function getAdminPin() {
   return process.env.ADMIN_PIN || 'giesto2026';
@@ -16,14 +22,8 @@ export async function POST(request) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  if (!process.env.BLOB_READ_WRITE_TOKEN) {
-    return Response.json(
-      {
-        error:
-          'Server storage is not set up. In Vercel → Storage → create a Blob store and link it to this project, then redeploy.',
-      },
-      { status: 503 }
-    );
+  if (!isBlobStorageReady()) {
+    return Response.json({ error: blobStorageError() }, { status: 503 });
   }
 
   const { imageData, categoryId } = body;
@@ -45,11 +45,21 @@ export async function POST(request) {
     return Response.json({ error: 'Image too large (max 800 KB)' }, { status: 400 });
   }
 
-  const { url } = await put(`giesto/covers/${categoryId}.${ext}`, buffer, {
-    access: 'public',
-    contentType,
-    addRandomSuffix: false,
-  });
+  const pathname = `giesto/covers/${categoryId}.${ext}`;
 
-  return Response.json({ url });
+  try {
+    await put(pathname, buffer, {
+      access: BLOB_ACCESS,
+      contentType,
+      addRandomSuffix: false,
+      allowOverwrite: true,
+    });
+  } catch (err) {
+    return Response.json(
+      { error: err.message || 'Failed to upload cover photo' },
+      { status: 500 }
+    );
+  }
+
+  return Response.json({ url: coverImageApiUrl(pathname) });
 }
